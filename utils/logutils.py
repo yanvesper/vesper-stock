@@ -1,18 +1,26 @@
-import logging
-from logging import handlers
+import yaml
+import logging.handlers
+import logging.config
+import os
 
 
-class Logger:
-    log_level = {
-        'debug': logging.DEBUG,
-        'info': logging.INFO,
-        'warning': logging.WARNING,
-        'error': logging.ERROR,
-        'critical': logging.CRITICAL
-    }  # 日志级别的关系映射
-
+class LogUtils:
     def __init__(self):
-        fmt = '%(asctime)s - %(levelname)s: %(message)s'
+        config_path = '../config/logging.yml'
 
-        self.logger = logging.getLogger("data")
-        stream_handler = logging.StreamHandler()
+        if os.path.exists(config_path):
+            with open(config_path, 'r') as f:
+                config = yaml.load(f, Loader=yaml.FullLoader)  # 读取配置，需要指定loader
+                logging.config.dictConfig(config)  # 加载配置
+
+    @staticmethod
+    def get_logger(logger_name=None):
+        return logging.root if logger_name is None else logging.getLogger(logger_name)
+
+
+my_logging = LogUtils()
+
+if __name__ == '__main__':
+    logger = my_logging.get_logger('data_acquisition_logger')
+    logger.error('error1')
+    logger.info('info1')
