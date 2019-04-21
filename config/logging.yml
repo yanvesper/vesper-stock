@@ -14,7 +14,7 @@ handlers:
     level: INFO
     formatter: simple
     filename: ../log/data_acquisition/info.log
-    when: 'D'
+    when: D
     backupCount: 5
     encoding: utf8
   error_file_handler1:
@@ -22,8 +22,9 @@ handlers:
     level: ERROR
     formatter: simple
     filename: ../log/data_acquisition/error.log
-    when: 'D'
-    backupCount: 5
+    interval: 1
+    when: W0
+    backupCount: 0
     encoding: utf8
 loggers:
   data_acquisition_logger:

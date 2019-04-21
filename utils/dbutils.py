@@ -39,9 +39,9 @@ class MongoConnection:
             bson_data = self.df2bson(df)
             result = self.collection.insert_many(bson_data)
             if result.acknowledged:
-                logger.info(f'[{self.database.name}/{self.collection.name}]: --- 成功插入{len(result.inserted_ids)}条数据 ---')
+                logger.info(f'[{self.database.name}/{self.collection.name}]: ### 成功插入{len(result.inserted_ids)}条数据 ###')
             else:
-                logger.info(f'[{self.database.name}/{self.collection.name}]: 数据插入失败')
+                logger.info(f'[{self.database.name}/{self.collection.name}]: ### 数据插入失败 ###')
 
     def get_last_data(self, collection_name=None):
         """获取指定集合中最后一条数据"""

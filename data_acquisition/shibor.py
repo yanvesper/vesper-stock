@@ -29,11 +29,12 @@ def shibor_acquisition(pro_interface):
             end_date = DateUtils.timestamp_to_str(end, time_format)
             start = end
 
-        # 获取数据并存入数据库
+        # 通过接口获取数据
         df = pro_interface.shibor(start_date=start_date, end_date=end_date)
-        # 将数据按日期进行升序排列
-        df.sort_values(by='date', inplace=True)
-        connection.set_id_column('date')
-        connection.df2mongo(df)
+        # 数据不为空时，存入数据库
+        if df.shape[0] is not 0:
+            df.sort_values(by='date', inplace=True)  # 将数据按日期进行升序排列
+            connection.set_id_column('date')
+            connection.df2mongo(df)
 
-    logger.info(f'[stock_data_raw/shibor]: --- 更新完成，最后数据时间: {DateUtils.timestamp_to_str(end, "%Y-%m-%d")} ---')
+    logger.info(f'[stock_data_raw/shibor]: ### 更新完成，最后数据时间: {connection.get_last_data()["_id"]} ###')
